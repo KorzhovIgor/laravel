@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\API\PolandNBAPI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use stdClass;
@@ -11,24 +12,12 @@ class CurrencyExchangeController extends Controller
     public function getCurrencyCourses(Request $request)
     {
         $date = $request->query('date');
-        $EUR = Http::withUrlParameters([
-            'endpoint' => 'http://api.nbp.pl/api/exchangerates/rates/',
-            'table' => 'A',
-            'code' => 'EUR',
-            'date' => $date,
-        ])->get('{+endpoint}/{table}/{code}/{date}')->json('rates.0.mid');
-
+        $EUR = PolandNBAPI::getCourse('EUR', $date);
         if ($EUR !== null) {
             $procentPLNDInEUR = 1 / $EUR;
         }
 
-        $USD = Http::withUrlParameters([
-            'endpoint' => 'http://api.nbp.pl/api/exchangerates/rates/',
-            'table' => 'A',
-            'code' => 'USD',
-            'date' => $date,
-        ])->get('{+endpoint}/{table}/{code}/{date}')->json('rates.0.mid');
-
+        $USD = PolandNBAPI::getCourse('USD', $date);
         if ($USD !== null) {
             $procentPLNDInUSD = 1 / $USD;
         }
