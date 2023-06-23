@@ -12,7 +12,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        Service::factory()->count(2)->make();
+        return view('test', ['products' => [0, 1, 2, 3, 0, 1, 2, 3, 9]]);
     }
 
     /**
