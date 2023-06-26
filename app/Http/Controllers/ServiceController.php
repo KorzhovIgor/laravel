@@ -4,23 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        return view('test', ['products' => [0, 1, 2, 3, 0, 1, 2, 3, 9]]);
+        return view('products.index', ['products' => [0, 1, 2, 3, 0, 1, 2, 3, 9]]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('products.create');
     }
 
     /**
