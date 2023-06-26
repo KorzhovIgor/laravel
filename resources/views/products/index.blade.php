@@ -7,7 +7,7 @@
         <x-searchbar />
         <div class="d-flex flex-wrap w-100 justify-content-around">
             @foreach ($products as $product)
-                <x-card />
+                <x-card :product="$product"/>
             @endforeach
         </div>
     </x-slot>

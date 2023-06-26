@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,5 +22,5 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
-Route::resource('service', ServiceController::class);
+Route::resource('product', ProductController::class);
 

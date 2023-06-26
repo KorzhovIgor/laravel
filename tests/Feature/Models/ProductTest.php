@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Models;
 
+use App\Models\Image;
 use App\Models\Product;
 use App\Models\Service;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,6 +25,9 @@ class ProductTest extends TestCase
         $this->assertSoftDeleted($product);
     }
 
+    /**
+     * @return void
+     */
     public function test_relationships_belongs_to_many_product_service(): void
     {
         $product = Product::factory()->create();
@@ -35,5 +39,22 @@ class ProductTest extends TestCase
             'product_id' => $product->id,
             'service_id' => $service->id
         ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_relationships_has_one_product_image(): void
+    {
+        $product = Product::factory()->create();
+        $image = Image::factory()->make();
+
+        $product->image()->save($image);
+
+        $this->assertDatabaseHas('images', [
+            'product_id' => $product->id
+        ]);
+
+        $this->assertDatabaseCount('images', 1);
     }
 }
