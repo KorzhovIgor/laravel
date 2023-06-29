@@ -1,3 +1,5 @@
+@props(['products'])
+
 <x-layout>
     <x-slot name="title">
         Laravel site

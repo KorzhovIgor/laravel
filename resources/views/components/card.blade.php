@@ -9,6 +9,7 @@
                 $product->description
             }}
         </p>
+        <h6 class="card-title fw-bold">Price: {{$product->price}}</h6>
         <a href="{{route('product.show', $product->id)}}" class="btn btn-primary">Open</a>
     </div>
 </div>

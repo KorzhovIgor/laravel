@@ -12,8 +12,19 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
-        Service::factory()
-            ->count(1)
-            ->create();
+        Service::insert([
+            [
+                'name' => 'warranty service',
+            ],
+            [
+                'name' => 'delivery',
+            ],
+            [
+                'name' => 'installation',
+            ],
+            [
+                'name' => 'customization',
+            ],
+        ]);
     }
 }

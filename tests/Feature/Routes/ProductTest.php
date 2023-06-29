@@ -56,8 +56,10 @@ class ProductTest extends TestCase
         ]);
 
         $product = Product::where('name', '=', $product->name)->first();
-        Storage::assertExists('public/images', $product->image->name);
-        //$this->assertEquals($countFiles, count(Storage::files('public/images')) + 1);
+
+        Storage::assertExists("public/images/{$product->image->name}");
+
+        Storage::delete("public/images/{$product->image->name}");
     }
 
 }

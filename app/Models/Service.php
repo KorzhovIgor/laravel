@@ -17,6 +17,6 @@ class Service extends Model
      * @return BelongsToMany
      */
     public function products(): belongsToMany  {
-        return $this->belongsToMany(Product::class, 'product_service');
+        return $this->belongsToMany(Product::class, 'products_services');
     }
 }
