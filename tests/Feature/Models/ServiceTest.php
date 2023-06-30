@@ -26,9 +26,12 @@ class ServiceTest extends TestCase
         $product = Product::factory()->create();
         $service = Service::factory()->create();
 
-        $service->products()->attach($product->id);
+        $service->products()->attach($product->id, [
+            'price' => 12.21,
+            'term_days' => 4,
+        ]);
 
-        $this->assertDatabaseHas('product_service', [
+        $this->assertDatabaseHas('products_services', [
             'product_id' => $product->id,
             'service_id' => $service->id
         ]);

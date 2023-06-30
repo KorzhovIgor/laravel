@@ -33,9 +33,12 @@ class ProductTest extends TestCase
         $product = Product::factory()->create();
         $service = Service::factory()->create();
 
-        $product->services()->attach($service->id);
+        $product->services()->sync([$service->id => [
+            'price' => 12.22,
+            'term_days' => 5
+        ]]);
 
-        $this->assertDatabaseHas('product_service', [
+        $this->assertDatabaseHas('products_services', [
             'product_id' => $product->id,
             'service_id' => $service->id
         ]);

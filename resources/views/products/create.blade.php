@@ -4,7 +4,7 @@
     </x-slot>
     <x-slot name="body">
         <x-navbar />
-        <form class="container w-50 mt-5 card p-5" action="{{route('product.store')}}" method="POST" enctype="multipart/form-data">
+        <form class="container w-50 mt-5 card p-5" action="{{route('products.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <h1 class="text-center">Product form</h1>
             <div class="mb-3">

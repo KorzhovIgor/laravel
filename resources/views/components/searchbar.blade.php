@@ -5,7 +5,7 @@
             <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
         <div>
-            <a class="btn btn-outline-success" href="{{route('product.create')}}">Create product</a>
+            <a class="btn btn-outline-success" href="{{route('products.create')}}">Create product</a>
         </div>
     </div>
 </nav>

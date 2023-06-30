@@ -15,14 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
-
 Route::get('/', function () {
     return view('index');
 })->name('index');
 
-Route::resource('product', ProductController::class);
-Route::resource('service', ServiceController::class);
+Route::resource('products', ProductController::class);
+Route::resource('products.services', ServiceController::class)->except(['index']);
 
