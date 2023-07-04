@@ -9,3 +9,8 @@ function storeImage(string $path, UploadedFile $image): string
 
     return substr($path, 14);
 }
+
+function deleteImage(string $path, string $fileName): void
+{
+    Storage::delete("public/images/{$fileName}");
+}

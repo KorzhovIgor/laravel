@@ -22,15 +22,23 @@
             <div class="card p-4">
                 <h5>Available services</h5>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
-
-                    </label>
+                    @foreach($services as $service)
+                        <div>
+                            <label class="form-check-label" for="{{$service->id}}">
+                                {{$service->name}}
+                                <br>
+                                Price: {{$service->pivot->price}}
+                            </label>
+                            <input class="form-check-input" type="checkbox" id="{{$service->id}}"
+                                   data-service-id="{{$service->id}}" data-service-price="{{$service->pivot->price}}">
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
         <div class="d-flex justify-content-center">
-            <h3>Full price: <span>{{$product->price}}</span></h3>
+            <h3>Full price: <span id="product-price">{{$product->price}}</span></h3>
         </div>
+        <script src="/scripts/calculateTotalPrice.js"></script>
     </x-slot>
 </x-layout>
