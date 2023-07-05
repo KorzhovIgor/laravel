@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductPutRequest;
+use App\Http\Requests\PutProductRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Image;
 use App\Models\Product;
@@ -81,7 +81,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductPutRequest $request, Product $product): RedirectResponse
+    public function update(PutProductRequest $request, Product $product): RedirectResponse
     {
         $productData = $request->validated();
 

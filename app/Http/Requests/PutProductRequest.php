@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use function Symfony\Component\Translation\t;
 
-class ProductPutRequest extends FormRequest
+class PutProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
