@@ -103,12 +103,12 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product): View
+    public function destroy(Product $product): RedirectResponse
     {
         $imageName = $product->image->name;
         deleteImage('public/images', $imageName);
         $product->delete();
 
-        return view('products.index');
+        return redirect()->route('products.index');
     }
 }

@@ -5,6 +5,7 @@ namespace Tests\Feature\Routes;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\Service;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -94,5 +95,58 @@ class ProductTest extends TestCase
         $response->assertViewIs('products.show');
         $response->assertViewHas('product', $product);
         $response->assertStatus(200);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_get_edit_form_product_view(): void
+    {
+        $product = Product::factory()->has(Image::factory()->count(1))->create();
+
+        $response = $this->get("/products/$product->id/edit");
+
+        $response->assertViewIs('products.edit');
+        $response->assertViewHas('product', $product);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_update_product_route_and_check_product_data(): void
+    {
+        $product = Product::factory()->has(Image::factory()->count(1))->create();
+
+        $product->name = '1234';
+        $product->producer = 'fdgdf1';
+        $product->description = 'fbhsdlgnm';
+        $product->price = '43.12';
+
+        $response = $this->put("/products/{$product->id}", $product->toArray());
+
+        $productFromDB = Product::where('id', $product->id)
+            ->first();
+
+        $this->assertEquals($product->name, $productFromDB->name);
+        $this->assertEquals($product->producer, $productFromDB->producer);
+        $this->assertEquals($product->description, $productFromDB->description);
+        $this->assertEquals($product->price, $productFromDB->price);
+
+        $response->assertStatus(302);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_destroy_product_route_and_check_product_data(): void
+    {
+        $product = Product::factory()->has(Image::factory()->count(1))->create();
+
+        $response = $this->delete("/products/{$product->id}");
+
+        $this->assertSoftDeleted($product);
+
+        $response->assertStatus(302);
     }
 }

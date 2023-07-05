@@ -25,4 +25,6 @@ class ImageTest extends TestCase
             'id' => $image->product->id,
         ]);
     }
+
+
 }
