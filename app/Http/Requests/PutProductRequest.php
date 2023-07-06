@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\CurrencyEnum;
+use App\Enums\ProducerEnum;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use function Symfony\Component\Translation\t;
 
 class PutProductRequest extends FormRequest
@@ -25,10 +28,12 @@ class PutProductRequest extends FormRequest
     {
         return [
             'name' => 'required|string|',
-            'producer' => 'required|string',
+            'producer' => ['required', Rule::in(ProducerEnum::values())],
             'description' => 'required|string',
             'price' => 'required|decimal:2',
             'image' => 'file',
+            'currency' => [Rule::in(CurrencyEnum::values())]
+
         ];
     }
 }

@@ -17,7 +17,7 @@
                 <h5>{{$product->name}}</h5>
                 <h5>Producer: {{$product->producer}}</h5>
                 <h6>{{$product->description}}</h6>
-                <h6 class="fw-bold">Price: {{$product->price}}</h6>
+                <h6 class="fw-bold">Price: {{$product->prices[0]->price}}</h6>
             </div>
             <div class="card p-4">
                 <h5>Available services</h5>
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-center">
-            <h3>Full price: <span id="product-price">{{$product->price}}</span></h3>
+            <h3>Full price: <span id="product-price">{{$product->prices[0]->price}}</span></h3>
         </div>
         <script src="/scripts/calculateTotalPrice.js"></script>
     </x-slot>

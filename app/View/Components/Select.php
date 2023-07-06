@@ -2,19 +2,24 @@
 
 namespace App\View\Components;
 
-use App\Models\Product;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Card extends Component
+class Select extends Component
 {
 
     /**
-     * @param Product $product
+     * @param array $options
+     * @param string $id
+     * @param string $name
+     * @param string|null $oldValue
      */
     public function __construct(
-        public Product $product,
+        public array  $options,
+        public string $id,
+        public string $name,
+        public ?string $oldValue,
     ) {}
 
     /**
@@ -22,6 +27,6 @@ class Card extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.card');
+        return view('components.select');
     }
 }

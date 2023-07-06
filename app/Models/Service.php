@@ -11,7 +11,9 @@ class Service extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name',
+    ];
 
     /**
      * @return BelongsToMany

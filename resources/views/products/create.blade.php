@@ -1,3 +1,4 @@
+@props(['producers'])
 <x-layout>
     <x-slot name="title">
         Laravel site
@@ -16,7 +17,7 @@
             @enderror
             <div class="mb-3">
                 <label for="producer" class="form-label">Producer</label>
-                <input name="producer" type="text" class="form-control" id="producer" value="{{old('producer')}}">
+                <x-select name="producer" :options="$producers" id="producer" :oldValue="old('producer')"/>
             </div>
             @error('producer')
             <div class="text-danger">{{ $message }}</div>

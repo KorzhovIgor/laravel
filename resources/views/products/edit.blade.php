@@ -36,7 +36,7 @@
             <div class="mb-3">
                 <label for="price" class="form-label">Price</label>
                 <input name="price" type="text" class="form-control" id="price" pattern="^\d*(\.\d{0,2})?$"
-                       placeholder="12.22" value="{{$product->price}}">
+                       placeholder="12.22" value="{{$product->prices[0]->price}}">
             </div>
             @error('price')
             <div class="text-danger">{{ $message }}</div>

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Models;
 
 use App\Models\Image;
+use App\Models\Price;
 use App\Models\Product;
 use App\Models\Service;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -59,5 +60,21 @@ class ProductTest extends TestCase
         ]);
 
         $this->assertDatabaseCount('images', 1);
+    }
+
+    public function test_relationships_one_to_many_prices(): void
+    {
+        $product = Product::factory()->create();
+        $price = Price::factory()->make();
+
+        $product->prices()->save($price);
+
+        $this->assertDatabaseHas('prices', [
+            'product_id' => $product->id,
+            'price' => $price->price,
+            'currency' => $price->currency,
+        ]);
+
+        $this->assertCount(1, $product->prices);
     }
 }

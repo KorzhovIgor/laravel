@@ -9,15 +9,12 @@ use Illuminate\View\Component;
 class Searchbar extends Component
 {
 
-    public ?string $title;
-
     /**
-     * Create a new component instance.
+     * @param string|null $title
      */
-    public function __construct(?string $title)
-    {
-        $this->title = $title;
-    }
+    public function __construct(
+        public ?string $title,
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

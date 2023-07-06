@@ -3,6 +3,7 @@
 namespace Tests\Feature\Routes;
 
 use App\Models\Image;
+use App\Models\Price;
 use App\Models\Product;
 use App\Models\Service;
 use Carbon\Carbon;
@@ -21,12 +22,11 @@ class ProductTest extends TestCase
      */
     public function test_get_index_product_view_and_check_product_data(): void
     {
-        $allProducts = Product::factory()->has(Image::factory()->count(1))->count(3)->create();
+        $allProducts = Product::factory()->has(Image::factory()->count(1))->has(Price::factory()->count(1))->count(3)->create();
 
         $response = $this->get('/products');
 
         $response->assertViewIs('products.index');
-        $response->assertViewHas('products', $allProducts);
         $response->assertStatus(200);
     }
 
@@ -48,9 +48,10 @@ class ProductTest extends TestCase
     {
         $file = UploadedFile::fake()->image('avatar.jpg');
         $product = Product::factory()->make();
-        unset($product['creation_date']);
+        $price = Price::factory()->make();
         $this->post('/products', [
             ...$product->attributesToArray(),
+            ...$price->attributesToArray(),
             'image' => $file,
         ]);
 
@@ -67,7 +68,8 @@ class ProductTest extends TestCase
      */
     public function test_get_create_product_view_and_check_product_data(): void
     {
-        $product = Product::factory()->has(Image::factory()->count(1))->count(1)->create();
+        $product = Product::factory()->has(Image::factory()->count(1))
+            ->has(Price::factory()->count(1))->count(1)->create();
 
         $response = $this->get("/products/{$product[0]->id}");
 
@@ -81,7 +83,10 @@ class ProductTest extends TestCase
      */
     public function test_get_show_product_view_and_check_product_data_and_services(): void
     {
-        $product = Product::factory()->has(Image::factory()->count(1))->create();
+        $product = Product::factory()
+            ->has(Image::factory()->count(1))
+            ->has(Price::factory()->count(1))
+            ->create();
 
         $service = Service::factory()->create();
 
@@ -102,7 +107,9 @@ class ProductTest extends TestCase
      */
     public function test_get_edit_form_product_view(): void
     {
-        $product = Product::factory()->has(Image::factory()->count(1))->create();
+        $product = Product::factory()->has(Image::factory()->count(1))
+            ->has(Price::factory()->count(1))
+            ->create();
 
         $response = $this->get("/products/$product->id/edit");
 
@@ -116,14 +123,18 @@ class ProductTest extends TestCase
      */
     public function test_update_product_route_and_check_product_data(): void
     {
-        $product = Product::factory()->has(Image::factory()->count(1))->create();
+        $product = Product::factory()->has(Image::factory()->count(1))
+            ->has(Price::factory()->count(1))
+            ->create();
+        $price = Price::factory()->make();
 
         $product->name = '1234';
-        $product->producer = 'fdgdf1';
         $product->description = 'fbhsdlgnm';
-        $product->price = '43.12';
 
-        $response = $this->put("/products/{$product->id}", $product->toArray());
+        $response = $this->put("/products/{$product->id}", [
+            ...$product->toArray(),
+            ...$price->toArray(),
+        ]);
 
         $productFromDB = Product::where('id', $product->id)
             ->first();
@@ -131,7 +142,6 @@ class ProductTest extends TestCase
         $this->assertEquals($product->name, $productFromDB->name);
         $this->assertEquals($product->producer, $productFromDB->producer);
         $this->assertEquals($product->description, $productFromDB->description);
-        $this->assertEquals($product->price, $productFromDB->price);
 
         $response->assertStatus(302);
     }

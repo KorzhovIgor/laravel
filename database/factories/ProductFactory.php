@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ProducerEnum;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,10 +20,8 @@ class ProductFactory extends Factory
     {
         return [
             'name' => fake()->name,
-            'producer' => fake()->company,
+            'producer' => ProducerEnum::values()[random_int(0, count(ProducerEnum::values()) - 1)],
             'description' => fake()->text,
-            'creation_date' => fake()->date,
-            'price' => fake()->randomFloat(2, 0,  100000),
         ];
     }
 }

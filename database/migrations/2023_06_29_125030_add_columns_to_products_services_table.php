@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('products_services', function (Blueprint $table) {
             $table->decimal('price');
-            $table->date('term_days');
+            $table->unsignedSmallInteger('term_days');
         });
     }
 

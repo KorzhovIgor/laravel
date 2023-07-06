@@ -9,7 +9,7 @@
                 $product->description
             }}
         </p>
-        <h6 class="card-title fw-bold">Price: {{$product->price}}</h6>
+        <h6 class="card-title fw-bold">Price: {{$product->prices[0]->price}}</h6>
         <a href="{{route('products.show', $product->id)}}" class="btn btn-primary">Open</a>
         <div class="btn-group">
             <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">

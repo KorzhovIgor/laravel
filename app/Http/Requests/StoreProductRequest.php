@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\CurrencyEnum;
+use App\Enums\ProducerEnum;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreProductRequest extends FormRequest
 {
@@ -17,16 +21,17 @@ class StoreProductRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
             'name' => 'required|string|unique:products',
-            'producer' => 'required|string',
+            'producer' => ['required', Rule::in(ProducerEnum::values())],
             'description' => 'required|string',
             'price' => 'required|decimal:2',
-            'image' => 'required|file'
+            'image' => 'required|file',
+            'currency' => [Rule::in(CurrencyEnum::values())],
         ];
     }
 }
