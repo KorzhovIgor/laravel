@@ -1,4 +1,4 @@
-@props(['products', 'title', 'producers'])
+@props(['products', 'title', 'producers', 'sorting'])
 
 <x-layout>
     <x-slot name="title">
@@ -17,6 +17,10 @@
                 <div class="card">
                     <form class="card-body" action="{{route('products.index')}}" method="get">
                         <h1 class="text-center">Filtration form</h1>
+                        <div class="mb-3">
+                            <label for="sort" class="form-label">Sorting by price</label>
+                            <x-select name="sort" :options="$sorting" id="sort" :oldValue="request()->sort" />
+                        </div>
                         <div class="mb-3">
                             <label for="producer" class="form-label">Producer</label>
                             <x-select name="producer" :options="$producers" id="producer" :oldValue="request()->producer" />

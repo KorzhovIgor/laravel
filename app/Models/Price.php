@@ -29,3 +29,18 @@ class Price extends Model
         return $this->belongsTo(Product::class);
     }
 }
+
+
+
+//$this->builder->whereExists(function (Builder $query) use ($min_price) {
+//    $query
+//        ->select(DB::raw(1))
+//        ->from('prices')
+//        ->whereColumn('prices.product_id', '=', 'products.id')
+//        ->where('price', '>=', 400)
+//        ->where('prices.created_at', function ($subquery) {
+//            $subquery
+//                ->select(DB::raw('MAX(t1.created_at)'))
+//                ->from('prices as t1')
+//                ->whereColumn('t1.product_id', '=', 'products.id');
+//        });

@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ProducerEnum;
+use App\Filters\ProductFilter;
 use App\Http\Requests\PutProductRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Image;
 use App\Models\Price;
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
+use stdClass;
 
 class ProductController extends Controller
 {
@@ -19,34 +19,23 @@ class ProductController extends Controller
     private const LIMIT_RECORDS = 3;
 
     /**
-     * @param Request $request
+     * @param ProductFilter $filter
      * @return View
      */
-    public function index(Request $request): View
+    public function index(ProductFilter $filter): View
     {
-        $allProducts = Product::query()
-            ->when($request->title, function (Builder $query, $title) {
-                $query->where('products.name', 'like', "{$title}%");
-            })
-            ->when($request->producer, function (Builder $query, $producer) {
-                $query->where('products.producer', $producer);
-            })
-            ->when($request->min_price, function (Builder $query, $min_price) {
-                $query->whereHas('prices', function (Builder $query) use ($min_price) {
-                    $query->where('prices.price', '>=',  $min_price);
-                });
-            })
-            ->when($request->max_price, function (Builder $query, $max_price) {
-                $query->whereHas('prices', function (Builder $query) use ($max_price) {
-                    $query->where('prices.price', '<=',  $max_price);
-                });
-            })
+        $products = Product::filter($filter)
             ->with('image')
             ->paginate(self::LIMIT_RECORDS)
             ->withQueryString();
 
-        return view('products.index', ['products' => $allProducts,
-            'producers' => ProducerEnum::cases()]);
+        $sorting = [
+            (object)['value' => 'asc'],
+            (object)['value' => 'desc']
+        ];
+
+        return view('products.index', ['products' => $products,
+            'producers' => ProducerEnum::cases(), 'sorting' => $sorting]);
     }
 
     /**
@@ -95,7 +84,7 @@ class ProductController extends Controller
      * @param Product $product
      * @return View
      */
-    public function edit(Product $product)
+    public function edit(Product $product): View
     {
         return view('products.edit', ['product' => $product]);
     }

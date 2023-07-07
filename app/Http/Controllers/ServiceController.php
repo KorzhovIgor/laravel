@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreServiceForProductRequest;
 use App\Models\Product;
 use App\Models\Service;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class ServiceController extends Controller
 {
     /**
      * Show the form for creating a new resource.
+     * @param Product $product
+     * @return View
      */
-    public function create(Product $product)
+    public function create(Product $product): View
     {
         $services = Service::all();
         return view('services.create', compact('services', 'product'));
@@ -20,8 +23,11 @@ class ServiceController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @param StoreServiceForProductRequest $request
+     * @param Product $product
+     * @return RedirectResponse
      */
-    public function store(StoreServiceForProductRequest $request, Product $product)
+    public function store(StoreServiceForProductRequest $request, Product $product): RedirectResponse
     {
         $serviceData = $request->validated();
 
@@ -38,37 +44,5 @@ class ServiceController extends Controller
             ->sync([...$servicesIds, $serviceId => $serviceData]);
 
         return redirect()->route('products.show', $product->id);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
