@@ -11,8 +11,6 @@ use App\Models\Price;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
-use stdClass;
-
 class ProductController extends Controller
 {
 

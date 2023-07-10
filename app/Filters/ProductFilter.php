@@ -4,7 +4,6 @@ namespace App\Filters;
 
 
 use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\DB;
 
 class ProductFilter extends QueryFilter
 {
@@ -14,7 +13,7 @@ class ProductFilter extends QueryFilter
      */
     public function title(string $title): void
     {
-        $this->builder->where('products.name', 'like', "{$title}%");
+        $this->builder->where('products.name', 'like', "$title%");
     }
 
     /**
@@ -30,41 +29,48 @@ class ProductFilter extends QueryFilter
      * @param string $min_price
      * @return void
      */
-    public function min_price($min_price): void
+    public function min_price(string $min_price): void
     {
-        $this->builder->whereExists(function (Builder $query) use ($min_price) {
+        $this->builder->where(function (Builder $query) {
             $query
-                ->select(DB::raw(1))
+                ->select('price')
                 ->from('prices')
                 ->whereColumn('prices.product_id', '=', 'products.id')
-                ->where('price', '>=', 400)
-                ->where('prices.created_at', function ($subquery) {
-                    $subquery
-                        ->select(DB::raw('MAX(t1.created_at)'))
-                        ->from('prices', 't1')
-                        ->whereColumn('t1.product_id', '=', 'products.id');
-                });
-        });
+                ->orderBy('created_at', 'desc')
+                ->limit(1);
+        }, '>=', $min_price);
     }
 
     /**
      * @param string $max_price
      * @return void
      */
-//    public function max_price(string $max_price): void
-//    {
-//        $this->builder->whereHas('prices', function (Builder $query) {
-//
-//            $query->where('prices.price', '<=',  $max_price)
-                ->where('prices')
-//;
-//        });
-//    }
-
-   /* public function sort(string $sortType): void
+    public function max_price(string $max_price): void
     {
-        $this->builder->orderBy(function (Builder $query) use ($sortType) {
-            $query->orderBy('prices.price', $sortType);
-        });
-    }*/
+        $this->builder->where(function (Builder $query) {
+            $query
+                ->select('price')
+                ->from('prices')
+                ->whereColumn('prices.product_id', '=', 'products.id')
+                ->orderBy('created_at', 'desc')
+                ->limit(1);
+        }, '<=', $max_price);
+    }
+
+    /**
+     * @param string $sort_type
+     * @return void
+     */
+    public function sort(string $sort_type): void
+    {
+        $this->builder->orderBy(function (Builder $query) {
+            $query
+                ->select('price')
+                ->from('prices')
+                ->whereColumn('prices.product_id', '=', 'products.id')
+                ->orderBy('created_at', 'desc')
+                ->limit(1);
+        }, $sort_type);
+    }
+
 }

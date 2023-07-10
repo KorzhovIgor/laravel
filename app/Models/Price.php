@@ -8,6 +8,33 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Models\Price
+ *
+ * @property int $id
+ * @property string $price
+ * @property CurrencyEnum $currency
+ * @property int $product_id
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Product $product
+ * @method static \Database\Factories\PriceFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Price newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Price newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Price onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Price query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Price whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Price whereCurrency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Price whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Price whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Price wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Price whereProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Price whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Price withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Price withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Price extends Model
 {
     use HasFactory, SoftDeletes;
@@ -29,18 +56,3 @@ class Price extends Model
         return $this->belongsTo(Product::class);
     }
 }
-
-
-
-//$this->builder->whereExists(function (Builder $query) use ($min_price) {
-//    $query
-//        ->select(DB::raw(1))
-//        ->from('prices')
-//        ->whereColumn('prices.product_id', '=', 'products.id')
-//        ->where('price', '>=', 400)
-//        ->where('prices.created_at', function ($subquery) {
-//            $subquery
-//                ->select(DB::raw('MAX(t1.created_at)'))
-//                ->from('prices as t1')
-//                ->whereColumn('t1.product_id', '=', 'products.id');
-//        });
