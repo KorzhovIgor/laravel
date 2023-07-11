@@ -1,5 +1,24 @@
 version: '3'
 services:
+    localstack:
+        image: localstack/localstack:latest
+        container_name: localstack
+        environment:
+#            - AWS_ACCESS_KEY_ID=foobar
+#            - AWS_SECRET_ACCESS_KEY=foobar
+#            - AWS_DEFAULT_REGION=us-east-1
+            - SERVICES=s3
+            - DEBUG=1
+            - DATA_DIR=/tmp/localstack/data
+            - DOCKER_HOST=unix:///var/run/docker.sock
+        ports:
+            - "4566:4566"
+        networks:
+            - sail
+        volumes:
+            - "./cors-config.json:/var/cors-config.json"
+            - "${TEMPDIR:-/tmp/localstack}:/tmp/localstack"
+            - "/var/run/docker.sock:/var/run/docker.sock"
     laravel.test:
         build:
             context: ./vendor/laravel/sail/runtimes/8.2

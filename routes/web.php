@@ -22,3 +22,5 @@ Route::get('/', function () {
 Route::resource('products', ProductController::class);
 Route::resource('products.services', ServiceController::class)->except(['index']);
 
+//test
+Route::resource('test', \App\Http\Controllers\SandboxController::class);

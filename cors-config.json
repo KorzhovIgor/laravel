@@ -1,0 +1,16 @@
+{
+  "CORSRules": [
+    {
+      "AllowedHeaders": ["*"],
+      "AllowedMethods": ["GET", "POST", "PUT"],
+      "AllowedOrigins": [
+	"http://laravel.test",
+	"http://0.0.0.0:80",
+	"http://localhost:3000",
+	"https://app.localstack.cloud",
+        "http://app.localstack.cloud"
+],
+      "ExposeHeaders": ["ETag"]
+    }
+  ]
+}
