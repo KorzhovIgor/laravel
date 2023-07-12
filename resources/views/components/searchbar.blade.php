@@ -6,6 +6,7 @@
         </form>
         <div>
             <a class="btn btn-outline-success" href="{{route('products.create')}}">Create product</a>
+            <a class="btn btn-outline-success" href="{{route('db-export')}}">Export data</a>
         </div>
     </div>
 </nav>

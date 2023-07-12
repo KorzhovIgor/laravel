@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Export\DBExportController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
@@ -24,3 +25,8 @@ Route::resource('products.services', ServiceController::class)->except(['index']
 
 //test
 Route::resource('test', \App\Http\Controllers\SandboxController::class);
+
+//Import and export csv
+Route::get('db-export', [DBExportController::class, 'fileExport'])
+    ->name('db-export');
+

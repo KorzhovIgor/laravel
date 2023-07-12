@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ExportPrice;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use MongoDB\Driver\Exception\ExecutionTimeoutException;
 
 class SandboxController extends Controller
 {
@@ -28,15 +32,18 @@ class SandboxController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $path = Storage::disk('s3')->put('/', $request->file('image'));
+        try {
+            Storage::disk('s3')->put('/', $request->file('image'));
+            Mail::to('darggerrfs@gmail.com')->send(new ExportPrice());
+            $success = 'You have successfully upload information.';
+        } catch (Exception $exception) {
+            $success = $exception->getMessage();
+        }
+        //$path = Storage::disk('s3')->put('/', $request->file('image'));
         //$path = Storage::disk('s3')->url($path);
-        //dd($path);
-        //$res = Http::get('http://0.0.0.0:4566/health');
-        /* Store $imageName name in DATABASE from HERE */
-
         return back()
-            ->with('success','You have successfully upload image.')
-            ->with('image', $path);
+            ->with('success', $success);
+            //->with('image', $path);
 
     }
 }

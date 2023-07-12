@@ -3,20 +3,23 @@ services:
     localstack:
         image: localstack/localstack:latest
         container_name: localstack
+        entrypoint: ["/opt/code/localstack/docker-entrypoint-extend.sh"]
         environment:
-#            - AWS_ACCESS_KEY_ID=foobar
-#            - AWS_SECRET_ACCESS_KEY=foobar
-#            - AWS_DEFAULT_REGION=us-east-1
-            - SERVICES=s3
+            - SERVICES=s3, ses
             - DEBUG=1
             - DATA_DIR=/tmp/localstack/data
+            - AWS_ACCESS_KEY_ID=foobar
+            - AWS_SESSION_TOKEN=token
+            - AWS_SECRET_ACCESS_KEY=foobar
+            - AWS_DEFAULT_REGION=us-east-1
             - DOCKER_HOST=unix:///var/run/docker.sock
         ports:
             - "4566:4566"
         networks:
             - sail
         volumes:
-            - "./cors-config.json:/var/cors-config.json"
+            - "./docker-entrypoint-extend.sh:/opt/code/localstack/docker-entrypoint-extend.sh"
+            #- "./cors-config.json:/var/cors-config.json"
             - "${TEMPDIR:-/tmp/localstack}:/tmp/localstack"
             - "/var/run/docker.sock:/var/run/docker.sock"
     laravel.test:
