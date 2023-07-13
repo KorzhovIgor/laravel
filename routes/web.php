@@ -23,10 +23,7 @@ Route::get('/', function () {
 Route::resource('products', ProductController::class);
 Route::resource('products.services', ServiceController::class)->except(['index']);
 
-//test
-Route::resource('test', \App\Http\Controllers\SandboxController::class);
-
 //Import and export csv
-Route::get('db-export', [DBExportController::class, 'fileExport'])
+Route::get('db-export', [DBExportController::class, 'fileExportToS3'])
     ->name('db-export');
 

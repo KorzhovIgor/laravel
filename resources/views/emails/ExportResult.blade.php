@@ -1,3 +1,3 @@
 <div>
-    Result
+    Your price was exported
 </div>

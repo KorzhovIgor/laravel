@@ -7,29 +7,24 @@ use App\Exports\PriceExport;
 use App\Exports\ProductExport;
 use App\Exports\ProductServiceExport;
 use App\Http\Controllers\Controller;
+use App\Mail\ExportPrice;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use ZipArchive;
 
 class DBExportController extends Controller
 {
-    public function fileExport(): BinaryFileResponse
+    public function fileExportToS3(): RedirectResponse
     {
-        $products = Excel::download(new ProductExport, 'products.csv');
-        $prices = Excel::download(new PriceExport, 'products.csv');
-        $products_services = Excel::download(new ProductServiceExport, 'products.csv');
-        $images = Excel::download(new ImagesExport, 'image.csv');
+        Excel::store(new ProductExport, 'products.csv', 's3');
+        Excel::store(new PriceExport, 'price.csv', 's3');
+        Excel::store(new ProductServiceExport, 'product_service.csv', 's3');
+        Excel::store(new ImagesExport, 'image.csv', 's3');
+        Mail::to('darggerrfs@gmail.com')->send(new ExportPrice());
 
-        $zip = new ZipArchive();
-        $fileName = 'zipFile.zip';
-        if ($zip->open(public_path($fileName), ZipArchive::CREATE)) {
-            $zip->addFile($products);
-            $zip->addFile($prices);
-            $zip->addFile($products_services);
-            $zip->addFile($images);
-            $zip->close();
-        }
 
-        return response()->download(public_path($fileName));
+        return redirect()->back();
     }
 }
